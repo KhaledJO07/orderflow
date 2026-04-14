@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.api.router import api_router
+from app.models import customer, product, order, order_item
 
 app = FastAPI(
     title="OrderFlow API",

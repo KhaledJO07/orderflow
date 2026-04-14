@@ -2,8 +2,7 @@ from sqlalchemy import Column, Integer, ForeignKey, Numeric, String, TIMESTAMP
 from sqlalchemy.sql import func
 from app.core.database import engine
 from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+from app.models.base import Base
 
 class Order(Base):
     __tablename__ = "orders"
