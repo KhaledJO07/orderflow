@@ -14,3 +14,15 @@ def extract_table(table_name):
     query = f"SELECT * FROM {table_name}"
     df = pd.read_sql(query, engine)
     return df
+
+def extract_incremental(table_name, id_column, last_value):
+    engine = get_oltp_engine()
+
+    query = f"""
+        SELECT *
+        FROM {table_name}
+        WHERE {id_column} > {last_value}
+    """
+
+    df = pd.read_sql(query, engine)
+    return df

@@ -1,0 +1,30 @@
+-- Check mismatch between order total and sum of items
+SELECT 
+    o.order_id,
+    o.total_amount,
+    SUM(oi.line_total) AS item_total,
+    (o.total_amount - SUM(oi.line_total)) AS difference
+FROM analytics.fact_orders o
+JOIN analytics.fact_order_items oi 
+    ON o.order_id = oi.order_id
+GROUP BY o.order_id, o.total_amount
+HAVING ABS(o.total_amount - SUM(oi.line_total)) > 0.01;
+
+SELECT *
+FROM analytics.dim_customers
+WHERE customer_id IS NULL OR email IS NULL;
+
+SELECT DISTINCT order_status
+FROM analytics.fact_orders
+WHERE order_status = 'unknown';
+
+SELECT *
+FROM analytics.fact_orders
+WHERE total_amount < 0;
+
+SELECT oi.*
+FROM analytics.fact_order_items oi
+LEFT JOIN analytics.fact_orders o 
+    ON oi.order_id = o.order_id
+WHERE o.order_id IS NULL;
+
