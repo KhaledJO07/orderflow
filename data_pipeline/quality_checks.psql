@@ -28,3 +28,8 @@ LEFT JOIN analytics.fact_orders o
     ON oi.order_id = o.order_id
 WHERE o.order_id IS NULL;
 
+SELECT 
+    'order_status' AS field,
+    COUNT(*) AS unknown_count
+FROM analytics.fact_orders
+WHERE order_status = 'unknown';
