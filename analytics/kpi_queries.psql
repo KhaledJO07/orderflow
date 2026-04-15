@@ -1,0 +1,50 @@
+SELECT SUM(total_amount) AS total_revenue
+FROM analytics.fact_orders;
+
+
+SELECT 
+    d.year,
+    d.month,
+    SUM(o.total_amount) AS revenue
+FROM analytics.fact_orders o
+JOIN analytics.dim_dates d 
+    ON o.order_date = d.date
+GROUP BY d.year, d.month
+ORDER BY d.year, d.month;
+
+
+SELECT 
+    c.customer_id,
+    c.first_name,
+    c.last_name,
+    SUM(o.total_amount) AS total_spent
+FROM analytics.fact_orders o
+JOIN analytics.dim_customers c 
+    ON o.customer_id = c.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name
+ORDER BY total_spent DESC
+LIMIT 5;
+
+SELECT 
+    p.product_name,
+    SUM(oi.quantity) AS total_sold,
+    SUM(oi.line_total) AS revenue
+FROM analytics.fact_order_items oi
+JOIN analytics.dim_products p 
+    ON oi.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY revenue DESC
+LIMIT 5;
+
+
+SELECT 
+    order_status,
+    COUNT(*) AS total_orders
+FROM analytics.fact_orders
+GROUP BY order_status;
+
+SELECT 
+    payment_status,
+    COUNT(*) AS count
+FROM analytics.fact_orders
+GROUP BY payment_status;
